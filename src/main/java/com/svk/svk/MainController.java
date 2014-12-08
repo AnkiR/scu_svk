@@ -1,5 +1,7 @@
 package com.svk.svk;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,16 +11,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.svk.svk.model.Member;
+import com.svk.svk.service.MemberService;
  
 @Controller
 public class MainController {
  
+	private MemberService memberService;
+	
+	@Autowired(required=true)
+	@Qualifier(value="memberService")
+	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
  
 	  ModelAndView model = new ModelAndView();
 	  model.addObject("title", "Spring Security Login Form - Database Authentication");
 	  model.addObject("message", "This is default page!");
+	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	  if (!(auth instanceof AnonymousAuthenticationToken)) {
+		UserDetails userDetail = (UserDetails) auth.getPrincipal();
+		Member m = memberService.getMemberByEmailId(userDetail.getUsername());
+		model.addObject("fullName", m.getFirstName() + " " + m.getLastName());
+	  }
 	  model.setViewName("hello");
 	  return model;
  

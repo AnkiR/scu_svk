@@ -24,6 +24,7 @@
                 User : ${pageContext.request.userPrincipal.name} | <a
                     href="javascript:formSubmit()"> Logout</a>
             </h2>
+            <h3>Full name : ${fullName}</h3>
         </c:if>
  
  

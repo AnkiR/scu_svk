@@ -30,9 +30,9 @@
       <authentication-provider>
         <jdbc-user-service data-source-ref="dataSource"
           users-by-username-query=
-            "select username,password, enabled from users where username=?"
+            "select EmailId, Password, 1 from MEMBER where EmailId=?"
           authorities-by-username-query=
-            "select username, role from user_roles where username =?  " />
+            "select EmailId, 'ROLE_USER' from MEMBER where EmailId =?  " />
       </authentication-provider>
     </authentication-manager>
  

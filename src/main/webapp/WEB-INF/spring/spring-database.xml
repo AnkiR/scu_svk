@@ -7,9 +7,9 @@
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
  
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/TestDB" />
-        <property name="username" value="pankaj" />
-        <property name="password" value="pankaj123" />
+        <property name="url" value="jdbc:mysql://localhost:3306/svk" />
+        <property name="username" value="svk_admin" />
+        <property name="password" value="svk_pwd" />
     </bean>
  
 </beans>

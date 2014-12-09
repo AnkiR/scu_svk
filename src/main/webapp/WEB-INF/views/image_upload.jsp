@@ -1,24 +1,18 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@page session="true"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" session="false" %>
 <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Upload File Request Page</title>
+</head>
+<body>
  
-<body> 
-
-<h2>Spring MVC - Uploading a file.. </h2>
-    <c:if test="${filename != null}">
-      <h3>You just uploaded ${filename}</h3>
-    </c:if>
-    <form:form method="POST" action="upload2" enctype="multipart/form-data">
- 
-        Upload your file please: 
-        <input type="file" name="file" />
-        Name: 
-        <input type="text" name="name"><br /> 
-        <input type="submit" value="upload" />
-        <form:errors path="file" cssStyle="color: #ff0000;" />
-    </form:form>
- 
+    <form method="post" action="uploadFile?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
+        File1 to upload: <input type="file" name="fileUpload"><br /> 
+        File2 to upload: <input type="file" name="fileUpload"><br /> 
+        <input type="submit" value="Upload"> Press here to upload the file!
+    </form>
+     
 </body>
 </html>

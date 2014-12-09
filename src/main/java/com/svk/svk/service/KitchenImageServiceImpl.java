@@ -1,6 +1,7 @@
 package com.svk.svk.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.svk.svk.dao.KitchenImageDao;
 import com.svk.svk.model.KitchenImage;
@@ -16,11 +17,13 @@ public class KitchenImageServiceImpl implements KitchenImageService {
 	}
 	
 	@Override
+	@Transactional
 	public void addKitchenImage(KitchenImage ki) {
 		kitchenImageDao.addKitchenImage(ki);
 	}
 
 	@Override
+	@Transactional
 	public KitchenImage getKitchenImageByMember(Member m) {
 		return kitchenImageDao.getKitchenImageByMember(m);
 	}

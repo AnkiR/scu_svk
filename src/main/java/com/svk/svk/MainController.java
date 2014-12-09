@@ -1,6 +1,11 @@
 package com.svk.svk;
 
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,11 +13,12 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.svk.svk.model.KitchenImage;
@@ -116,28 +122,33 @@ public class MainController {
         return model;
     }
  
-	@RequestMapping(value="/upload2", method=RequestMethod.POST)
-    public ModelAndView handleFileUpload(@RequestParam("name") String name,
-            @RequestParam("file") MultipartFile file){
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public ModelAndView uploadFileHandler(HttpServletRequest request,
+            @RequestParam CommonsMultipartFile[] fileUpload) {
 		ModelAndView model = new ModelAndView();
-		if (!file.isEmpty()) {
-			byte[] imageBytes;
-			try {
-				imageBytes = file.getBytes();
-				Member m = getLoggedInUser();
+		if (fileUpload != null && fileUpload.length > 0) {
+			Member m = getLoggedInUser();
+			int i = 0;
+			for (CommonsMultipartFile aFile : fileUpload) {
 				KitchenImage ki = new KitchenImage();
-				ki.setImage(imageBytes);
+				ki.setImage(aFile.getBytes());
 				ki.setMemberId(m.getMemberId());
-				ki.setImageIndex(1);
+				ki.setImageIndex(i++);
 				kitchenImageService.addKitchenImage(ki);
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-			model.addObject("filename", file.getName());
 		}
-		
-		
-		model.setViewName("image_upload");
+		KitchenImage ki = kitchenImageService.getKitchenImageByMember(getLoggedInUser());
+		model.addObject("img_src", "data:image/png;base64," + Base64.encode(ki.getImage()));
+		model.setViewName("upload_success");
 		return model;
 	}
+	
+	@RequestMapping(value="/viewImage", method=RequestMethod.GET)
+    public ModelAndView viewImage() {
+		ModelAndView model = new ModelAndView();
+		KitchenImage ki = kitchenImageService.getKitchenImageByMember(getLoggedInUser());
+		model.addObject("img_src", "data:image/png;base64," + new String(ki.getImage()));
+		model.setViewName("upload_success");
+        return model;
+    }
 }

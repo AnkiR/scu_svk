@@ -32,15 +32,16 @@ public class KitchenImageDaoImpl implements KitchenImageDao {
 	}
 
 	@Override
-	public KitchenImage getKitchenImageByMember(Member m) {
+	public List<KitchenImage> getKitchenImageByMember(Member m) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from KitchenImage where MemberId = :memberId ");
 		query.setParameter("memberId", m.getMemberId());
-		List list = query.list();
-		if (list.isEmpty()) {
-			return null;
-		}
-		return (KitchenImage) list.get(0);
+		return query.list();
+//		List list = query.list();
+//		if (list.isEmpty()) {
+//			return null;
+//		}
+//		return (KitchenImage) list.get(0);
 	}
 
 }

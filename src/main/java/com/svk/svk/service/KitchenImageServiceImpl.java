@@ -1,5 +1,7 @@
 package com.svk.svk.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ public class KitchenImageServiceImpl implements KitchenImageService {
 
 	@Override
 	@Transactional
-	public KitchenImage getKitchenImageByMember(Member m) {
+	public List<KitchenImage> getKitchenImageByMember(Member m) {
 		return kitchenImageDao.getKitchenImageByMember(m);
 	}
 

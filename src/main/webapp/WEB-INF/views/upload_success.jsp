@@ -6,6 +6,6 @@
 </head>
 <body>
 Success yaar
-<img src="${img_src}">
+<img src="${img_src}"/>
 </body>
 </html>

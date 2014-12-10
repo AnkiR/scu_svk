@@ -1,8 +1,12 @@
 package com.svk.svk;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -125,11 +129,14 @@ public class MainController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public ModelAndView uploadFileHandler(HttpServletRequest request,
             @RequestParam CommonsMultipartFile[] fileUpload) {
-		ModelAndView model = new ModelAndView();
 		if (fileUpload != null && fileUpload.length > 0) {
 			Member m = getLoggedInUser();
 			int i = 0;
 			for (CommonsMultipartFile aFile : fileUpload) {
+				if (aFile == null || aFile.getBytes() == null || 
+			        aFile.getBytes().length < 1000) {
+					continue;
+				}
 				KitchenImage ki = new KitchenImage();
 				ki.setImage(aFile.getBytes());
 				ki.setMemberId(m.getMemberId());
@@ -137,18 +144,57 @@ public class MainController {
 				kitchenImageService.addKitchenImage(ki);
 			}
 		}
-		KitchenImage ki = kitchenImageService.getKitchenImageByMember(getLoggedInUser());
-		model.addObject("img_src", "data:image/png;base64," + Base64.encode(ki.getImage()));
-		model.setViewName("upload_success");
-		return model;
+		return viewImage();
 	}
 	
 	@RequestMapping(value="/viewImage", method=RequestMethod.GET)
     public ModelAndView viewImage() {
 		ModelAndView model = new ModelAndView();
-		KitchenImage ki = kitchenImageService.getKitchenImageByMember(getLoggedInUser());
-		model.addObject("img_src", "data:image/png;base64," + new String(ki.getImage()));
+		model.addObject("img_src", dumpImages(getLoggedInUser()));
 		model.setViewName("upload_success");
         return model;
+    }
+	
+	private String dumpImages(Member m) {
+		List<KitchenImage> ki = kitchenImageService.getKitchenImageByMember(getLoggedInUser());
+		if (ki.isEmpty()) {
+			return "/images/no_image.png";
+		}
+
+		try {
+			int i = 0;
+			BufferedImage img = ImageIO.read(new ByteArrayInputStream(ki.get(0).getImage()));
+			while (i < ki.size() - 1) {
+				i++;
+				BufferedImage img2 = ImageIO.read(new ByteArrayInputStream(ki.get(i).getImage()));
+				img = joinBufferedImage(img, img2);
+			}
+			String filename = "member" + m.getMemberId() + ".png";
+			File imgFile = new File("/tmp/images", filename);
+			ImageIO.write(img, "png", imgFile);
+			return "/images/" + filename;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private BufferedImage joinBufferedImage(BufferedImage img1,BufferedImage img2) {
+        //do some calculate first
+        int offset  = 0;
+        int wid = img1.getWidth()+img2.getWidth()+offset;
+        int height = Math.max(img1.getHeight(),img2.getHeight())+offset;
+        //create a new buffer and draw two image into the new image
+        BufferedImage newImage = new BufferedImage(wid,height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = newImage.createGraphics();
+        Color oldColor = g2.getColor();
+        //fill background
+        g2.setPaint(Color.WHITE);
+        g2.fillRect(0, 0, wid, height);
+        //draw image
+        g2.setColor(oldColor);
+        g2.drawImage(img1, null, 0, 0);
+        g2.drawImage(img2, null, img1.getWidth()+offset, 0);
+        g2.dispose();
+        return newImage;
     }
 }

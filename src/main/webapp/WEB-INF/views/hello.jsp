@@ -25,6 +25,8 @@
                     href="javascript:formSubmit()"> Logout</a>
             </h2>
             <h3>Full name : ${fullName}</h3>
+            <a href="upload">Upload kitchen images</a>
+            <a href="viewImage">View uploaded kitchen images</a>
         </c:if>
  
  

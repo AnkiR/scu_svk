@@ -29,5 +29,10 @@ public class KitchenImageServiceImpl implements KitchenImageService {
 	public List<KitchenImage> getKitchenImageByMember(Member m) {
 		return kitchenImageDao.getKitchenImageByMember(m);
 	}
-
+	
+	@Override
+	@Transactional
+	public void deleteAllImagesForMember(Member m){
+		kitchenImageDao.deleteAllImagesForMember(m);
+	}
 }

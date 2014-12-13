@@ -10,4 +10,5 @@ public interface KitchenImageDao {
 	public void addKitchenImage(KitchenImage ki);
 	public void updateKitchenImage(KitchenImage ki);
 	public List<KitchenImage> getKitchenImageByMember(Member m);
+	public void deleteAllImagesForMember(Member m);
 }

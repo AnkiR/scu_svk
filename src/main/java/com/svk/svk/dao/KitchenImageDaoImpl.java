@@ -43,5 +43,15 @@ public class KitchenImageDaoImpl implements KitchenImageDao {
 //		}
 //		return (KitchenImage) list.get(0);
 	}
+	
+	@Override
+	public void deleteAllImagesForMember(Member m) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("delete KitchenImage where MemberId = :ID");
+		query.setParameter("ID", m.getMemberId());
+		 
+		int result = query.executeUpdate();
+	}
 
 }
+

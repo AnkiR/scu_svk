@@ -5,7 +5,6 @@
 <title>Upload File success Page</title>
 </head>
 <body>
-Success yaar
 <img src="${img_src}"/>
 </body>
 </html>

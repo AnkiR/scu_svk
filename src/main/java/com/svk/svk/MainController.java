@@ -57,17 +57,17 @@ public class MainController {
 		return null;
 	}
 	
-	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/" ,"/home**"}, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
  
 	  ModelAndView model = new ModelAndView();
-	  model.addObject("title", "Spring Security Login Form - Database Authentication");
-	  model.addObject("message", "This is default page!");
+	 // model.addObject("title", "Spring Security Login Form - Database Authentication");
+	 // model.addObject("message", "This is default page!");
 	  Member m = getLoggedInUser();
 	  if (m != null) {
 		  model.addObject("fullName", m.getFirstName() + " " + m.getLastName());
 	  }
-	  model.setViewName("hello");
+	  model.setViewName("login");
 	  return model;
  
 	}
@@ -131,7 +131,9 @@ public class MainController {
             @RequestParam CommonsMultipartFile[] fileUpload) {
 		if (fileUpload != null && fileUpload.length > 0) {
 			Member m = getLoggedInUser();
+		
 			int i = 0;
+			kitchenImageService.deleteAllImagesForMember(m);
 			for (CommonsMultipartFile aFile : fileUpload) {
 				if (aFile == null || aFile.getBytes() == null || 
 			        aFile.getBytes().length < 1000) {
@@ -170,9 +172,9 @@ public class MainController {
 				img = joinBufferedImage(img, img2);
 			}
 			String filename = "member" + m.getMemberId() + ".png";
-			File imgFile = new File("/tmp/images", filename);
+			File imgFile = new File("C:/temp/images", filename);
 			ImageIO.write(img, "png", imgFile);
-			return "/images/" + filename;
+			return "C:/temp/images/" + filename;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

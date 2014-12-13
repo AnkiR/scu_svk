@@ -15,8 +15,8 @@
         <access-denied-handler error-page="/403" />
  
         <form-login 
-            login-page="/login" 
-            default-target-url="/welcome" 
+            login-page="/home" 
+            default-target-url="/login" 
             authentication-failure-url="/login?error" 
             username-parameter="username"
             password-parameter="password" />

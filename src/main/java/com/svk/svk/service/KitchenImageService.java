@@ -10,4 +10,6 @@ public interface KitchenImageService {
 	public void addKitchenImage(KitchenImage ki);
 	
 	public List<KitchenImage> getKitchenImageByMember(Member m);
+	
+	public void deleteAllImagesForMember(Member m);
 }

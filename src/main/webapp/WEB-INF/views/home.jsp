@@ -13,13 +13,13 @@
 #nav {
     line-height:30px;
     background-color:white;
-    width:60%;
+    width:40%;
     float:left;
     padding:5px;	      
 }
 #section {
     background-color:white;
-    width:30%;
+    width:50%;
     float:left;
     padding:10px;	 	 
 }
@@ -34,15 +34,14 @@
 </head>
 
 <body>
+
 <div id="header">
 <h1>SEARS VIRTUAL KITCHEN</h1>
-<div style="text-align:right">Hello ${fullName}</div>
-<div style="text-align:right"><a href="/svk/login">Logout</a></div><hr></div>
-
+</div>
+<hr>
 
 <div id="nav">
-<img src="images/home.jpg" alt="Home Screen">
-<br><br><br><br>
+<img src="/images/home.jpg" alt=" Home Screen">
 </div>
 
 <div id="section">
@@ -53,8 +52,7 @@ Sears Virtual Kitchen helps you design your kitchen space with various appliance
 <span style="text-align:right"><a href="upload"><button style="background-color: #FF6600; color: white">Launch Virtual Kitchen</button></a></span>
 <br><br>
 <span style="text-align:right">
-<a href="instructions">Instructions to upload your image</a></span>
-<br><br><br><br>
+<a href="http://www.w3schools.com/html/">Instructions to upload your image</a></span>
 </div>
 
 

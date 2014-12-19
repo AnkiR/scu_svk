@@ -33,9 +33,15 @@
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
+		<url-pattern>/img/*</url-pattern>
+	</servlet-mapping>
+
+	
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.jpg</url-pattern>
 	</servlet-mapping>
 	
-	<welcome-file-list><welcome-file>login.jsp</welcome-file> </welcome-file-list>
 
     <!-- Spring Security -->
     <filter>
